@@ -18,22 +18,20 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ulff_php_mongodb_settings');
+        $rootNode = $treeBuilder->root('ulff_php_mongodb_client');
 
         $rootNode
             ->children()
             ->arrayNode('connection')
                 ->children()
                     ->scalarNode('host')->isRequired()->cannotBeEmpty()->end()
-                    ->scalarNode('port')->isRequired()->defaultValue('27017')->end()
+                    ->scalarNode('port')->cannotBeEmpty()->defaultValue(27017)->end()
                     ->scalarNode('username')->defaultNull()->end()
                     ->scalarNode('password')->defaultNull()->end()
                 ->end()
             ->end()
             ->arrayNode('options')
-                ->children()
-                    ->prototype('scalar')->end()
-                    ->defaultValue(array())
+                ->prototype('scalar')
                 ->end()
             ->end()
         ;
