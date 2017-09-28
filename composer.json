@@ -1,0 +1,22 @@
+{
+    "name": "ulff/php-mongodb-client-bundle",
+    "type": "symfony-bundle",
+    "description": "",
+    "keywords": ["mongo", "mongodb", "php-mongo", "symfony3", "symfony2", "bundle", "php7", "php5"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Olaf Gałązka",
+            "email": "ulff.pl@gmail.com",
+            "homepage": "http://ulff.pl/"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "symfony/framework-bundle": "~2.1|~3.0",
+        "mongodb/mongodb": "~1.1"
+    },
+    "autoload": {
+        "psr-4": { "Ulff\\PhpMongodbClientBundle\\": "" }
+    }
+}

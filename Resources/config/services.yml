@@ -1,0 +1,4 @@
+services:
+    ulff_php_mongodb_client.client:
+        class: Ulff\PhpMongodbClientBundle\Client\PhpMongodbClient
+        arguments: ["%ulff_php_mongodb_settings%"]
