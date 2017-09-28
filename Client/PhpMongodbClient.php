@@ -15,9 +15,14 @@ class PhpMongodbClient
     private $nativeClient;
 
     /**
-     * @var ConnectionSettings
+     * @var ConnectionUri
      */
-    private $connectionSettings;
+    private $connectionUri;
+
+    /**
+     * @var ConnectionOptions
+     */
+    private $connectionOptions;
 
     /**
      * @param \MongoClient $nativeClient
@@ -27,7 +32,10 @@ class PhpMongodbClient
         $this->validateEnvironment();
         $this->retrieveParams($params);
 
-        $this->nativeClient = new \MongoClient((string) $this->connectionSettings);
+        $this->nativeClient = new \MongoClient(
+            (string) $this->connectionUri,
+            $this->connectionOptions->toArray()
+        );
     }
 
     /**
@@ -55,13 +63,11 @@ class PhpMongodbClient
 
     private function retrieveParams(array $params)
     {
-        if(empty($params['mongodb_host'])) {
-            throw new MongodbConfigurationException('Missing configuration: mongodb_host');
-        }
-        if(empty($params['mongodb_port'])) {
-            throw new MongodbConfigurationException('Missing configuration: mongodb_port');
+        if(!array_key_exists('connection', $params)) {
+            throw new MongodbConfigurationException('Missing configuration: connection');
         }
 
-        $this->connectionSettings = new ConnectionSettings($params['mongodb_host'], $params['mongodb_port']);
+        $this->connectionUri = new ConnectionUri($params['connection']);
+        $this->connectionOptions = new ConnectionOptions($params['options']);
     }
 }

@@ -18,18 +18,25 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ulff_php_mongodb_client');
+        $rootNode = $treeBuilder->root('ulff_php_mongodb_settings');
 
         $rootNode
             ->children()
-            ->scalarNode('mongodb_host')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('mongodb_port')->isRequired()->cannotBeEmpty()->end()
+            ->arrayNode('connection')
+                ->children()
+                    ->scalarNode('host')->isRequired()->cannotBeEmpty()->end()
+                    ->scalarNode('port')->isRequired()->defaultValue('27017')->end()
+                    ->scalarNode('username')->defaultNull()->end()
+                    ->scalarNode('password')->defaultNull()->end()
+                ->end()
+            ->end()
+            ->arrayNode('options')
+                ->children()
+                    ->prototype('scalar')->end()
+                    ->defaultValue(array())
+                ->end()
             ->end()
         ;
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
 
         return $treeBuilder;
     }
