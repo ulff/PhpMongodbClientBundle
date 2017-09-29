@@ -10,9 +10,9 @@ use Ulff\PhpMongodbClientBundle\Exception\MongodbEnvironmentException;
 class PhpMongodbClient
 {
     /**
-     * @var \MongoClient
+     * @var \MongoDB\Driver\Manager
      */
-    private $nativeClient;
+    private $manager;
 
     /**
      * @var ConnectionUri
@@ -25,39 +25,31 @@ class PhpMongodbClient
     private $connectionOptions;
 
     /**
-     * @param \MongoClient $nativeClient
+     * @param \MongoDB\Driver\Manager $nativeClient
      */
     public function __construct(array $params)
     {
         $this->validateEnvironment();
         $this->retrieveParams($params);
 
-        $this->nativeClient = new \MongoClient(
+        $this->manager = new \MongoDB\Driver\Manager(
             (string) $this->connectionUri,
             $this->connectionOptions->toArray()
         );
     }
 
     /**
-     * @return string
+     * @return \MongoDB\Driver\Manager
      */
-    public function getVersion(): string
+    public function getManager(): \MongoDB\Driver\Manager
     {
-        return \MongoClient::VERSION;
-    }
-
-    /**
-     * @return \MongoClient
-     */
-    public function getNativeClient(): \MongoClient
-    {
-        return $this->nativeClient;
+        return $this->manager;
     }
 
     private function validateEnvironment()
     {
-        if(!class_exists('\MongoClient')) {
-            throw new MongodbEnvironmentException('Missing dependencies: missing native mongodb client');
+        if(!class_exists('\MongoDB\Driver\Manager')) {
+            throw new MongodbEnvironmentException('Missing dependencies: missing mongodb driver');
         }
     }
 
